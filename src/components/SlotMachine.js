@@ -4,22 +4,28 @@ import Button from './Button';
 import Balance from './Balance';
 import './SlotMachine.css';
 
+const emojis = ['🍒', '🍊', '🍇', '🍓', '🍉', '🍋'];
+
+const getRandomEmoji = () => {
+  const randomIndex = Math.floor(Math.random() * emojis.length);
+  return emojis[randomIndex];
+};
+
 const SlotMachine = () => {
   const [balance, setBalance] = useState(5000);
   const [bet, setBet] = useState(500);
   const [isAutoSpin, setIsAutoSpin] = useState(false);
-  const [slotResults, setSlotResults] = useState([
-    [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
-    [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
-    [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
-  ]);
+  const [slotResults, setSlotResults] = useState(generateInitialResults());
   const [speed, setSpeed] = useState(100);
-  const emojis = ['🍒', '🍊', '🍇', '🍓', '🍉', '🍋'];
 
-  const getRandomEmoji = () => {
-    const randomIndex = Math.floor(Math.random() * emojis.length);
-    return emojis[randomIndex];
-  };
+  function generateInitialResults() {
+    const initialResults = [];
+    for (let i = 0; i < 3; i++) {
+      const lineResults = [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()];
+      initialResults.push(lineResults);
+    }
+    return initialResults;
+  }
 
   const startSpin = () => {
     setIsAutoSpin(true);
@@ -27,11 +33,6 @@ const SlotMachine = () => {
 
   const stopSpin = () => {
     setIsAutoSpin(false);
-    setSlotResults([
-      [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
-      [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
-      [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
-    ]);
   };
 
   useEffect(() => {
@@ -62,18 +63,19 @@ const SlotMachine = () => {
         } else if (bet === 1000) {
         } else if (bet === 1500) {
         } else if (bet === 2000) {
-        
         }
       });
 
-      setBalance(prevBalance => prevBalance + winAmount - bet);
+      const newBalance = balance + winAmount - bet;
+      setBalance(newBalance >= 0 ? newBalance : 0);
     };
 
     calculateWin();
-  }, [slotResults, bet]);
+  }, [slotResults, bet, balance]);
 
   const handleBetChange = amount => {
-    setBet(prevBet => prevBet + amount);
+    const newBet = bet + amount;
+    setBet(newBet >= 0 ? newBet : 0);
   };
 
   const handleRefreshBalance = () => {
@@ -82,10 +84,12 @@ const SlotMachine = () => {
 
   return (
     <div className="slot-machine">
-      <div className="slot-lines-container">
-        {slotResults.map((results, index) => (
-          <SlotLine key={index} emoji1={results[0]} emoji2={results[1]} emoji3={results[2]} />
-        ))}
+      <div className="slot-machine-container">
+        <div className="slot-lines-container">
+          {slotResults.map((results, index) => (
+            <SlotLine key={index} emoji1={results[0]} emoji2={results[1]} emoji3={results[2]} />
+          ))}
+        </div>
       </div>
       <Button label={isAutoSpin ? 'Stop' : 'Spin'} onClick={isAutoSpin ? stopSpin : startSpin} />
       <Button label="-" onClick={() => handleBetChange(-500)} />

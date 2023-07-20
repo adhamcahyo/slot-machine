@@ -1,65 +1,83 @@
-/* SlotMachine.css */
 .slot-machine {
+    width: 400px;
+    height: 300px;
+    background-color: #333;
+    border: 5px solid #555;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .slot-lines-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 2rem;
-    gap: 1rem;
-    padding: 2rem;
+    justify-content: space-between;
+    height: 200px;
+    margin-bottom: 20px;
   }
   
   .slot-line {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 3rem;
+    justify-content: space-between;
+    width: 100%;
   }
   
-  @keyframes slot-spin {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(-80px);
-    }
+  .slot-emoji {
+    font-size: 40px;
+    margin: 0 10px;
   }
   
-  .slot-line span {
-    animation: slot-spin 1s ease-in-out infinite;
-  }
-  
-  .button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    background-color: #4caf50;
-    color: white;
+  .spin-button {
+    background-color: #ff5722;
+    color: #fff;
     border: none;
     border-radius: 5px;
+    font-size: 16px;
+    padding: 10px 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .spin-button:hover {
+    background-color: #f44336;
+  }
+  
+  .bet-button {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .bet-button:hover {
+    background-color: #388e3c;
+  }
+  
+ 
+  .refresh-button {
+    background-color: #9e9e9e;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .refresh-button:hover {
+    background-color: #757575;
   }
   
   .balance {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  
-  .refresh-button {
-    font-size: 1rem;
-    color: #4caf50;
-    cursor: pointer;
-  }
-  
-  .lamp {
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    border-radius: 50%;
-    margin-left: 5px;
-    box-shadow: 0 0 5px red;
-  }
-  
-  .lamp.on {
-    background-color: yellow;
-    box-shadow: 0 0 10px yellow;
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
   }
   
