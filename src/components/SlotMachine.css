@@ -1,0 +1,65 @@
+/* SlotMachine.css */
+.slot-machine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2rem;
+    gap: 1rem;
+    padding: 2rem;
+  }
+  
+  .slot-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 3rem;
+  }
+  
+  @keyframes slot-spin {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-80px);
+    }
+  }
+  
+  .slot-line span {
+    animation: slot-spin 1s ease-in-out infinite;
+  }
+  
+  .button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .balance {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .refresh-button {
+    font-size: 1rem;
+    color: #4caf50;
+    cursor: pointer;
+  }
+  
+  .lamp {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    margin-left: 5px;
+    box-shadow: 0 0 5px red;
+  }
+  
+  .lamp.on {
+    background-color: yellow;
+    box-shadow: 0 0 10px yellow;
+  }
+  

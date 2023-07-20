@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import SlotLine from './SlotLine';
 import Button from './Button';
 import Balance from './Balance';
+import './SlotMachine.css';
 
 const SlotMachine = () => {
   const [balance, setBalance] = useState(5000);
   const [bet, setBet] = useState(500);
   const [isAutoSpin, setIsAutoSpin] = useState(false);
-  const [slotResult, setSlotResult] = useState([]);
+  const [slotResults, setSlotResults] = useState([
+    [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
+    [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
+    [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
+  ]);
   const [speed, setSpeed] = useState(100);
   const emojis = ['🍒', '🍊', '🍇', '🍓', '🍉', '🍋'];
 
@@ -15,13 +20,18 @@ const SlotMachine = () => {
     const randomIndex = Math.floor(Math.random() * emojis.length);
     return emojis[randomIndex];
   };
+
   const startSpin = () => {
     setIsAutoSpin(true);
   };
 
   const stopSpin = () => {
     setIsAutoSpin(false);
-    setSlotResult([getRandomEmoji(), getRandomEmoji(), getRandomEmoji()]);
+    setSlotResults([
+      [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
+      [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
+      [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()],
+    ]);
   };
 
   useEffect(() => {
@@ -29,7 +39,9 @@ const SlotMachine = () => {
 
     if (isAutoSpin) {
       interval = setInterval(() => {
-        setSlotResult([getRandomEmoji(), getRandomEmoji(), getRandomEmoji()]);
+        setSlotResults(prevResults =>
+          prevResults.map(lineResults => [getRandomEmoji(), getRandomEmoji(), getRandomEmoji()])
+        );
       }, speed);
     }
 
@@ -39,31 +51,42 @@ const SlotMachine = () => {
   useEffect(() => {
     const calculateWin = () => {
       let winAmount = 0;
-      const [emoji1, emoji2, emoji3] = slotResult;
 
-      if (bet === 500) {
-        if (emoji1 === emoji2 && emoji2 === emoji3) {
-          winAmount = 100;  }
-      } else if (bet === 1000) {
-      } else if (bet === 1500) {
-      } else if (bet === 2000) {
-      }
+      slotResults.forEach(lineResults => {
+        const [emoji1, emoji2, emoji3] = lineResults;
+
+        if (bet === 500) {
+          if (emoji1 === emoji2 && emoji2 === emoji3) {
+            winAmount += 100;
+          }
+        } else if (bet === 1000) {
+        } else if (bet === 1500) {
+        } else if (bet === 2000) {
+        
+        }
+      });
 
       setBalance(prevBalance => prevBalance + winAmount - bet);
     };
 
     calculateWin();
-  }, [slotResult, bet]);
+  }, [slotResults, bet]);
+
   const handleBetChange = amount => {
     setBet(prevBet => prevBet + amount);
   };
+
   const handleRefreshBalance = () => {
     setBalance(5000);
   };
 
   return (
     <div className="slot-machine">
-      <SlotLine emoji1={slotResult[0]} emoji2={slotResult[1]} emoji3={slotResult[2]} />
+      <div className="slot-lines-container">
+        {slotResults.map((results, index) => (
+          <SlotLine key={index} emoji1={results[0]} emoji2={results[1]} emoji3={results[2]} />
+        ))}
+      </div>
       <Button label={isAutoSpin ? 'Stop' : 'Spin'} onClick={isAutoSpin ? stopSpin : startSpin} />
       <Button label="-" onClick={() => handleBetChange(-500)} />
       <Button label="+" onClick={() => handleBetChange(500)} />
